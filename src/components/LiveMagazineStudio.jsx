@@ -1,78 +1,49 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Newspaper, BookOpen, Rss, ArrowLeft, Bookmark, Share2, Sparkles, Eye, Download, Layers } from 'lucide-react';
+import { Newspaper, BookOpen, Rss, ArrowLeft, Bookmark, Share2, Sparkles, Eye, Download, Layers, CheckCircle2, Clock, ShoppingBag } from 'lucide-react';
+import { INITIAL_MAGAZINES } from '../data/mockBooks';
 
-const MAGAZINES = [
-    {
-        id: 'mag-1',
-        title: 'STAX ARCHITECTURE & DESIGN QUARTERLY',
-        issue: 'Issue #42 • Autumn 2026',
-        category: 'Architecture & Design',
-        readTime: '15 min read',
-        cover: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80',
-        articles: [
-            {
-                id: 'art-1',
-                title: 'The Resurgence of Brutalist Glassmorphism in Modern Digital OS',
-                author: 'Elena Rostova',
-                date: 'Sept 2026',
-                subtitle: 'How tactile textures, 3D depth physics, and translucent glass redefined digital libraries.',
-                content: `In an era dominated by flat, sterile UI surfaces, a quiet revolution has taken root among software architects. Digital systems are shifting back toward tactile realism—a philosophy dubbed "Brutalist Glassmorphic Realism". By combining light refraction, ambient depth shadows, and physical 3D perspective transforms, contemporary user interfaces evoke the permanence of physical leatherbound archives while retaining the speed of modern GPU acceleration.\n\nKey to this movement is the elevation of typography and spatial hierarchy. When readers interact with digital volumes that tilt, open, and reflect ambient light, the psychological boundary between physical paper and OLED screens dissolves.`
-            },
-            {
-                id: 'art-2',
-                title: 'Kinetic Typography as a Spatial Navigation Paradigm',
-                author: 'Marcus Vance',
-                date: 'Aug 2026',
-                subtitle: 'Exploring how animated text physics guide human focus.',
-                content: `Motion in typography is no longer mere decoration; it is structural. By modulating letter spacing, skew, and weight transitions during scroll events, digital publications create a rhythmic reading velocity that matches human cognitive intake.`
-            }
-        ]
-    },
-    {
-        id: 'mag-2',
-        title: 'WIRED TECH REVIEW: NEURAL E-READERS',
-        issue: 'Vol. 18 • Special Edition',
-        category: 'Technology',
-        readTime: '12 min read',
-        cover: 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=800&q=80',
-        articles: [
-            {
-                id: 'art-3',
-                title: 'E-Ink Gallery 3 vs OLED: The Battle for Sequential Art Supremacy',
-                author: 'Kaito Tanaka',
-                date: 'Sept 2026',
-                subtitle: 'Full-color reflective displays reach 300 DPI with sub-100ms refresh rates.',
-                content: `Comic and manga readers have long faced a dilemma: the eye-comfort of monochrome E-Ink versus the vivid hues of emissive displays. With the latest full-color E-Ink Gallery 3 panels paired with local GPU rasterizers, sequential art rendering has achieved print parity.`
-            }
-        ]
-    }
-];
-
-export default function LiveMagazineStudio() {
-    const [selectedMag, setSelectedMag] = useState(MAGAZINES[0]);
+export default function LiveMagazineStudio({
+    magazines: propMagazines,
+    onBuy,
+    onRent,
+    user
+}) {
+    const magazineList = propMagazines && propMagazines.length > 0 ? propMagazines : INITIAL_MAGAZINES;
+    const [selectedMag, setSelectedMag] = useState(magazineList[0]);
     const [activeArticleIndex, setActiveArticleIndex] = useState(0);
     const [isReadingMode, setIsReadingMode] = useState(false);
 
-    const currentArticle = selectedMag.articles[activeArticleIndex] || selectedMag.articles[0];
+    const purchasedIds = user?.purchasedIds || [];
+    const activeRentals = user?.rentals || [];
+    const isOwned = (id) => purchasedIds.includes(id);
+    const getRental = (id) => activeRentals.find(r => r.id === id);
+
+    const currentArticle = selectedMag?.articles?.[activeArticleIndex] || selectedMag?.articles?.[0] || {
+        title: 'Editorial Overview',
+        author: 'Staff Writer',
+        date: 'Sept 2026',
+        subtitle: 'Digital architecture and magazine spreads',
+        content: 'Editorial content preview.'
+    };
 
     return (
-        <div className="w-full space-y-6">
+        <div className="w-full space-y-6 text-left">
             {/* Banner */}
             <div className="relative overflow-hidden rounded-3xl glass-panel border border-slate-800 p-6 lg:p-8">
-                <div className="flex items-center justify-between">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                     <div className="space-y-1">
                         <div className="flex items-center gap-2">
                             <Newspaper className="w-6 h-6 text-purple-400" />
                             <h2 className="text-2xl font-display font-black text-white">Live Magazine & Periodicals Studio</h2>
                         </div>
                         <p className="text-xs text-slate-400 font-mono">
-                            Editorial multi-column glossy magazine reader, live article feeds, and high-DPI periodical spreads
+                            Editorial multi-column glossy magazine reader, live article feeds, buy issues, and 7-day rentals
                         </p>
                     </div>
 
-                    <span className="px-3 py-1 rounded-full bg-purple-500/20 text-purple-300 font-mono text-xs border border-purple-500/30">
-                        Glossy Periodical Engine v2.4
+                    <span className="px-3 py-1 rounded-full bg-purple-500/20 text-purple-300 font-mono text-xs border border-purple-500/30 self-start sm:self-auto">
+                        Glossy Periodical Engine v3.5
                     </span>
                 </div>
             </div>
@@ -80,37 +51,95 @@ export default function LiveMagazineStudio() {
             {!isReadingMode ? (
                 /* Magazine Library Spread */
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {MAGAZINES.map((mag) => (
-                        <motion.div
-                            key={mag.id}
-                            whileHover={{ y: -6 }}
-                            className="glass-card rounded-3xl p-6 border border-slate-800 space-y-4 flex flex-col justify-between"
-                        >
-                            <div className="flex gap-4">
-                                <img src={mag.cover} alt={mag.title} className="w-28 h-40 object-cover rounded-2xl shadow-xl border border-slate-700" />
-                                <div className="space-y-2 flex-1">
-                                    <span className="text-[10px] font-mono uppercase tracking-widest px-2 py-0.5 rounded bg-purple-500/20 text-purple-300 border border-purple-500/30">
-                                        {mag.category}
-                                    </span>
-                                    <h3 className="font-display font-bold text-lg text-white leading-tight">{mag.title}</h3>
-                                    <p className="text-xs text-slate-400 font-mono">{mag.issue}</p>
-                                    <p className="text-xs text-slate-300 line-clamp-2 italic">
-                                        "{mag.articles[0].subtitle}"
-                                    </p>
-                                </div>
-                            </div>
+                    {magazineList.map((mag) => {
+                        const owned = isOwned(mag.id);
+                        const rental = getRental(mag.id);
+                        const stock = Number(mag.stock || 20);
+                        const price = Number(mag.price || 9.99);
+                        const rentPrice = Number(mag.rentPrice || 1.99);
 
-                            <div className="pt-3 border-t border-slate-800/80 flex items-center justify-between">
-                                <span className="text-xs font-mono text-slate-400">{mag.readTime}</span>
-                                <button
-                                    onClick={() => { setSelectedMag(mag); setActiveArticleIndex(0); setIsReadingMode(true); }}
-                                    className="px-5 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-bold text-xs uppercase tracking-wider flex items-center gap-2 shadow-lg shadow-purple-600/30"
-                                >
-                                    <BookOpen className="w-4 h-4" /> Open Magazine
-                                </button>
-                            </div>
-                        </motion.div>
-                    ))}
+                        return (
+                            <motion.div
+                                key={mag.id}
+                                whileHover={{ y: -4 }}
+                                className="glass-card rounded-3xl p-6 border border-slate-800 space-y-4 flex flex-col justify-between"
+                            >
+                                <div className="flex gap-4">
+                                    <div className="relative shrink-0">
+                                        <img src={mag.cover} alt={mag.title} className="w-28 h-40 object-cover rounded-2xl shadow-xl border border-slate-700" />
+                                        {owned && (
+                                            <span className="absolute top-2 left-2 px-2 py-0.5 rounded bg-emerald-950/90 text-emerald-300 border border-emerald-500/40 text-[9px] font-mono font-bold">
+                                                OWNED
+                                            </span>
+                                        )}
+                                        {!owned && rental && (
+                                            <span className="absolute top-2 left-2 px-2 py-0.5 rounded bg-purple-950/90 text-purple-300 border border-purple-500/40 text-[9px] font-mono font-bold">
+                                                {rental.daysRemaining || 7}d RENT
+                                            </span>
+                                        )}
+                                    </div>
+                                    <div className="space-y-2 flex-1 min-w-0">
+                                        <div className="flex items-center justify-between">
+                                            <span className="text-[10px] font-mono uppercase tracking-widest px-2 py-0.5 rounded bg-purple-500/20 text-purple-300 border border-purple-500/30">
+                                                {mag.category}
+                                            </span>
+                                            <span className="text-[10px] font-mono text-slate-400">
+                                                Stock: <span className={stock <= 5 ? 'text-amber-400' : 'text-emerald-400'}>{stock}</span>
+                                            </span>
+                                        </div>
+                                        <h3 className="font-display font-bold text-lg text-white leading-tight">{mag.title}</h3>
+                                        <p className="text-xs text-slate-400 font-mono">{mag.issue}</p>
+                                        <p className="text-xs text-slate-300 line-clamp-2 italic">
+                                            "{mag.articles?.[0]?.subtitle || mag.description}"
+                                        </p>
+                                    </div>
+                                </div>
+
+                                {/* Pricing & Actions */}
+                                <div className="pt-3 border-t border-slate-800/80 flex flex-wrap items-center justify-between gap-3">
+                                    <div className="flex items-center gap-3 text-xs font-mono text-slate-400">
+                                        <span>{mag.readTime || '15 min read'}</span>
+                                        <span>•</span>
+                                        <span className="text-slate-300">Buy: <b className="text-white">${price.toFixed(2)}</b></span>
+                                        <span>•</span>
+                                        <span className="text-purple-300">Rent: <b>${rentPrice.toFixed(2)}</b></span>
+                                    </div>
+
+                                    <div className="flex items-center gap-2">
+                                        {onBuy && !owned && (
+                                            <button
+                                                type="button"
+                                                onClick={() => onBuy(mag)}
+                                                className="px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs font-mono font-bold cursor-pointer transition-all"
+                                                title={`Buy issue for $${price.toFixed(2)}`}
+                                            >
+                                                Buy (${price.toFixed(2)})
+                                            </button>
+                                        )}
+
+                                        {onRent && !owned && (
+                                            <button
+                                                type="button"
+                                                onClick={() => onRent(mag)}
+                                                className="px-3 py-2 rounded-xl bg-purple-950/60 hover:bg-purple-900 text-purple-300 border border-purple-500/30 text-xs font-mono font-bold cursor-pointer transition-all"
+                                                title={`Rent for 7 days for $${rentPrice.toFixed(2)}`}
+                                            >
+                                                Rent (${rentPrice.toFixed(2)})
+                                            </button>
+                                        )}
+
+                                        <button
+                                            onClick={() => { setSelectedMag(mag); setActiveArticleIndex(0); setIsReadingMode(true); }}
+                                            className="px-4 py-2 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-bold text-xs uppercase tracking-wider flex items-center gap-1.5 shadow-lg shadow-purple-600/30 cursor-pointer transition-all"
+                                        >
+                                            <BookOpen className="w-3.5 h-3.5" />
+                                            <span>Read</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </motion.div>
+                        );
+                    })}
                 </div>
             ) : (
                 /* Glossy Reader Layout */

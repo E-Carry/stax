@@ -12,7 +12,7 @@ import {
     BookMarked
 } from 'lucide-react';
 
-export default function BookModal({ book, onClose, onRead, onConvert, onSync }) {
+export default function BookModal({ book, onClose, onRead, onConvert, onSync, onBuy, onRent, isOwned, rentalInfo }) {
     const [rotationY, setRotationY] = useState(-20);
     const [rotationX, setRotationX] = useState(10);
     const [isOpenBook, setIsOpenBook] = useState(false);
@@ -25,6 +25,10 @@ export default function BookModal({ book, onClose, onRead, onConvert, onSync }) 
         setCopied(true);
         setTimeout(() => setCopied(false), 2000);
     };
+
+    const stock = Number(book.stock !== undefined ? book.stock : 12);
+    const price = Number(book.price || 14.99);
+    const rentPrice = Number(book.rentPrice || 2.99);
 
     return (
         <AnimatePresence>
@@ -157,11 +161,66 @@ export default function BookModal({ book, onClose, onRead, onConvert, onSync }) 
                                 {book.description}
                             </p>
 
+                            {/* Pricing & Acquisition Options */}
+                            <div className="p-3.5 rounded-2xl bg-slate-950/80 border border-slate-800 space-y-2">
+                                <div className="flex items-center justify-between text-xs font-mono">
+                                    <span className="text-slate-400">Inventory Status:</span>
+                                    <span className={`font-bold ${stock > 0 ? 'text-emerald-400' : 'text-rose-400'}`}>
+                                        {stock > 0 ? `${stock} Available in Warehouse / Cloud` : 'Out of Stock'}
+                                    </span>
+                                </div>
+
+                                {isOwned ? (
+                                    <div className="flex items-center gap-2 p-2 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-xs font-mono">
+                                        <span className="font-bold">✓ Lifetime Digital License Owned</span>
+                                    </div>
+                                ) : rentalInfo ? (
+                                    <div className="flex items-center justify-between p-2 rounded-xl bg-purple-500/10 border border-purple-500/30 text-purple-300 text-xs font-mono">
+                                        <span>Active Rental: {rentalInfo.daysRemaining || 7} days remaining</span>
+                                        {onBuy && (
+                                            <button
+                                                type="button"
+                                                onClick={() => { onClose(); onBuy(book); }}
+                                                className="px-2 py-0.5 rounded bg-purple-600 hover:bg-purple-500 text-white text-[10px] font-bold cursor-pointer"
+                                            >
+                                                Upgrade to Lifetime (${price.toFixed(2)})
+                                            </button>
+                                        )}
+                                    </div>
+                                ) : (
+                                    <div className="grid grid-cols-2 gap-2 pt-1">
+                                        {onBuy && (
+                                            <button
+                                                type="button"
+                                                disabled={stock <= 0}
+                                                onClick={() => { onClose(); onBuy(book); }}
+                                                className="py-2.5 px-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 disabled:opacity-40 text-white font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-1.5 shadow-md shadow-indigo-600/30 transition-all cursor-pointer"
+                                            >
+                                                <span>Buy to Keep</span>
+                                                <span className="font-mono text-indigo-200">(${price.toFixed(2)})</span>
+                                            </button>
+                                        )}
+
+                                        {onRent && (
+                                            <button
+                                                type="button"
+                                                disabled={stock <= 0}
+                                                onClick={() => { onClose(); onRent(book); }}
+                                                className="py-2.5 px-3 rounded-xl bg-slate-800 hover:bg-slate-700 disabled:opacity-40 text-slate-200 border border-slate-700 font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-1.5 transition-all cursor-pointer"
+                                            >
+                                                <span className="text-purple-400">Rent 7d</span>
+                                                <span className="font-mono text-purple-300">(${rentPrice.toFixed(2)})</span>
+                                            </button>
+                                        )}
+                                    </div>
+                                )}
+                            </div>
+
                             {/* Action Buttons */}
-                            <div className="pt-4 flex flex-wrap items-center gap-3">
+                            <div className="pt-2 flex flex-wrap items-center gap-3">
                                 <button
                                     onClick={() => { onClose(); onRead(book); }}
-                                    className="flex-1 min-w-[140px] py-3 rounded-2xl bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg shadow-indigo-600/30 transition-all"
+                                    className="flex-1 min-w-[140px] py-3 rounded-2xl bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg shadow-indigo-600/30 transition-all cursor-pointer"
                                 >
                                     <BookOpen className="w-4 h-4" />
                                     <span>{book.isAudiobook ? 'Listen Audio' : book.isManga ? 'Read Manga' : 'Open Reader'}</span>
@@ -169,7 +228,7 @@ export default function BookModal({ book, onClose, onRead, onConvert, onSync }) 
 
                                 <button
                                     onClick={() => { onClose(); onConvert(book); }}
-                                    className="py-3 px-4 rounded-2xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold text-xs flex items-center gap-2 border border-slate-700 transition-all"
+                                    className="py-3 px-4 rounded-2xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold text-xs flex items-center gap-2 border border-slate-700 transition-all cursor-pointer"
                                 >
                                     <RefreshCw className="w-4 h-4 text-purple-400" />
                                     <span>Convert</span>
@@ -177,7 +236,7 @@ export default function BookModal({ book, onClose, onRead, onConvert, onSync }) 
 
                                 <button
                                     onClick={() => { onClose(); onSync(book); }}
-                                    className="py-3 px-4 rounded-2xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold text-xs flex items-center gap-2 border border-slate-700 transition-all"
+                                    className="py-3 px-4 rounded-2xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold text-xs flex items-center gap-2 border border-slate-700 transition-all cursor-pointer"
                                 >
                                     <Smartphone className="w-4 h-4 text-emerald-400" />
                                     <span>Sync</span>

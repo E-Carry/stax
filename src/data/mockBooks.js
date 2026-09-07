@@ -472,6 +472,222 @@ Design systems are not static pattern libraries. They are living, breathing oper
 Welcome to Stax Periodicals. In this issue, we explore the intersection of spatial computing, e-paper display technologies, and hyper-realistic reading environments.
     `
     }
+].map((b, i) => ({
+    ...b,
+    itemType: 'book',
+    price: b.price || [14.99, 12.50, 19.99, 9.99, 15.99, 11.49, 13.99, 16.50, 18.00, 10.99, 21.00, 14.00, 17.50, 24.99, 16.99, 8.99][i % 16],
+    rentPrice: b.rentPrice || [2.99, 2.49, 3.99, 1.99, 3.49, 2.29, 2.79, 3.29, 3.50, 2.19, 4.20, 2.80, 3.50, 4.99, 3.39, 1.79][i % 16],
+    stock: b.stock !== undefined ? b.stock : [14, 8, 22, 5, 18, 12, 3, 16, 9, 25, 4, 11, 7, 19, 15, 20][i % 16],
+    isAvailableForBuy: true,
+    isAvailableForRent: true
+}));
+
+export const INITIAL_MAGAZINES = [
+    {
+        id: 'mag-001',
+        title: 'STAX Architecture & Design Quarterly',
+        issue: 'Issue #42 • Autumn 2026',
+        category: 'Architecture & Design',
+        editor: 'Elena Rostova',
+        publisher: 'Stax Media Group',
+        price: 9.99,
+        rentPrice: 1.99,
+        stock: 32,
+        itemType: 'magazine',
+        isAvailableForRent: true,
+        isAvailableForBuy: true,
+        readTime: '15 min read',
+        format: 'GLOSSY-PDF',
+        rating: 4.9,
+        cover: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80',
+        description: 'Tactile textures, 3D depth physics, kinetic typography, and brutalist glassmorphism redefining contemporary digital libraries.',
+        articles: [
+            {
+                id: 'art-1',
+                title: 'The Resurgence of Brutalist Glassmorphism in Modern Digital OS',
+                author: 'Elena Rostova',
+                date: 'Sept 2026',
+                subtitle: 'How tactile textures, 3D depth physics, and translucent glass redefined digital libraries.',
+                content: 'In an era dominated by flat, sterile UI surfaces, a quiet revolution has taken root among software architects. Digital systems are shifting back toward tactile realism—a philosophy dubbed "Brutalist Glassmorphic Realism". By combining light refraction, ambient depth shadows, and physical 3D perspective transforms, contemporary user interfaces evoke the permanence of physical leatherbound archives while retaining the speed of modern GPU acceleration.'
+            },
+            {
+                id: 'art-2',
+                title: 'Kinetic Typography as a Spatial Navigation Paradigm',
+                author: 'Marcus Vance',
+                date: 'Aug 2026',
+                subtitle: 'Exploring how animated text physics guide human focus.',
+                content: 'Motion in typography is no longer mere decoration; it is structural. By modulating letter spacing, skew, and weight transitions during scroll events, digital publications create a rhythmic reading velocity that matches human cognitive intake.'
+            }
+        ]
+    },
+    {
+        id: 'mag-002',
+        title: 'Wired Tech Review: Neural E-Readers',
+        issue: 'Vol. 18 • Special Edition',
+        category: 'Technology',
+        editor: 'Kaito Tanaka',
+        publisher: 'Wired Media',
+        price: 7.99,
+        rentPrice: 1.49,
+        stock: 24,
+        itemType: 'magazine',
+        isAvailableForRent: true,
+        isAvailableForBuy: true,
+        readTime: '12 min read',
+        format: 'GLOSSY-PDF',
+        rating: 4.8,
+        cover: 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=800&q=80',
+        description: 'Full-color reflective displays reach 300 DPI with sub-100ms refresh rates for comic and manga reading parity.',
+        articles: [
+            {
+                id: 'art-3',
+                title: 'E-Ink Gallery 3 vs OLED: The Battle for Sequential Art Supremacy',
+                author: 'Kaito Tanaka',
+                date: 'Sept 2026',
+                subtitle: 'Full-color reflective displays reach 300 DPI with sub-100ms refresh rates.',
+                content: 'Comic and manga readers have long faced a dilemma: the eye-comfort of monochrome E-Ink versus the vivid hues of emissive displays. With the latest full-color E-Ink Gallery 3 panels paired with local GPU rasterizers, sequential art rendering has achieved print parity.'
+            }
+        ]
+    },
+    {
+        id: 'mag-003',
+        title: 'Monocle Digital Culture & Typography',
+        issue: 'Issue #104 • Global Edition',
+        category: 'Culture',
+        editor: 'Julian Moreau',
+        publisher: 'Monocle Editorial',
+        price: 11.99,
+        rentPrice: 2.49,
+        stock: 15,
+        itemType: 'magazine',
+        isAvailableForRent: true,
+        isAvailableForBuy: true,
+        readTime: '20 min read',
+        format: 'EPUB-MAG',
+        rating: 4.9,
+        cover: 'https://images.unsplash.com/photo-1505373877841-8d25f7d46678?auto=format&fit=crop&w=800&q=80',
+        description: 'Deep dives into minimalist Swiss type systems, spatial layout engines, and the resurgence of independent journals.',
+        articles: [
+            {
+                id: 'art-4',
+                title: 'The Swiss Grid in the Age of Spatial Computing',
+                author: 'Julian Moreau',
+                date: 'Aug 2026',
+                subtitle: 'Translating Josef Müller-Brockmann principles into 3D reactive viewports.',
+                content: 'Grid-based design has transitioned from two dimensions to depth-layered responsive layouts. When readers manipulate viewport angle, modular grids retain typographic legibility through dynamic scale compensations.'
+            }
+        ]
+    },
+    {
+        id: 'mag-004',
+        title: 'Scientific Frontiers & Quantum Computing',
+        issue: 'Quarterly Vol. 9',
+        category: 'Science',
+        editor: 'Dr. Aris Thorne',
+        publisher: 'Frontiers Press',
+        price: 12.99,
+        rentPrice: 2.99,
+        stock: 6,
+        itemType: 'magazine',
+        isAvailableForRent: true,
+        isAvailableForBuy: true,
+        readTime: '25 min read',
+        format: 'PDF',
+        rating: 5.0,
+        cover: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=800&q=80',
+        description: 'Breakthroughs in room-temperature superconductors, topological qubits, and quantum memory architectures.',
+        articles: [
+            {
+                id: 'art-5',
+                title: 'Topological Qubits and Fault-Tolerant Quantum Cryptography',
+                author: 'Dr. Aris Thorne',
+                date: 'Sept 2026',
+                subtitle: 'How Majorana zero modes are stabilizing quantum state coherence past 10 seconds.',
+                content: 'Recent breakthroughs at quantum research laboratories indicate that braiding non-Abelian anyons protects quantum information from local environmental decoherence, paving the way for commercially viable cryptographic key generation.'
+            }
+        ]
+    }
+];
+
+export const INITIAL_SYSTEM_ERRORS = [
+    {
+        id: 'ERR-SYNC-402',
+        code: 'CACHE_INDEX_DESYNC',
+        title: 'Corrupted Cover Thumbnail Cache',
+        component: 'Asset Storage Engine',
+        severity: 'warning',
+        timestamp: 'Just now',
+        details: 'Cover cache for 2 asset bundles failed checksum verification at node-edge-03. Rendering fallback active.',
+        resolved: false,
+        resolutionSteps: ['Purging stale cache chunks', 'Re-fetching vector covers from origin CDN', 'Re-building local SQLite thumbnail indices']
+    },
+    {
+        id: 'ERR-STOCK-108',
+        code: 'STALE_INVENTORY_MUTEX',
+        title: 'Stale Inventory Mutex Lock',
+        component: 'Order & Rental Manager',
+        severity: 'critical',
+        timestamp: '4 mins ago',
+        details: 'Volume "Dune: Master Edition" (#stax-001) has 1 checkout lock pending acknowledgment past TTL (450ms).',
+        resolved: false,
+        resolutionSteps: ['Releasing orphan mutex locks', 'Recalculating physical & digital stock balances', 'Emitting stock sync event to cluster']
+    },
+    {
+        id: 'ERR-GW-201',
+        code: 'GATEWAY_WEBHOOK_RETRY',
+        title: 'Payment Gateway Webhook Queue Backoff',
+        component: 'Stripe/UPI Dispatcher',
+        severity: 'warning',
+        timestamp: '12 mins ago',
+        details: 'Webhook listener encountered 2 retry backoffs on sandbox test listener. Transactions are completing safely with fallback polling.',
+        resolved: false,
+        resolutionSteps: ['Flushing pending webhook retry queue', 'Verifying 256-bit TLS handshake certificate', 'Re-synchronizing merchant settlement ledger']
+    }
+];
+
+export const DEFAULT_ACCOUNTS = [
+    {
+        id: 'usr-admin-01',
+        name: 'Ritesh (Administrator)',
+        email: 'admin@stax.io',
+        password: 'admin123',
+        role: 'admin',
+        avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80',
+        walletBalance: 250.00,
+        purchasedIds: ['stax-001', 'stax-002', 'mag-001'],
+        rentals: [
+            {
+                id: 'stax-003',
+                itemType: 'book',
+                title: 'Akira: Vol 1 (Sequential Comic)',
+                rentedAt: Date.now() - 2 * 24 * 60 * 60 * 1000,
+                expiresAt: Date.now() + 5 * 24 * 60 * 60 * 1000,
+                daysRemaining: 5,
+                plan: '7-Day Access'
+            }
+        ]
+    },
+    {
+        id: 'usr-reader-01',
+        name: 'Alex Mercer',
+        email: 'reader@stax.io',
+        password: 'reader123',
+        role: 'reader',
+        avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=200&q=80',
+        walletBalance: 85.50,
+        purchasedIds: ['stax-001', 'stax-005'],
+        rentals: [
+            {
+                id: 'mag-001',
+                itemType: 'magazine',
+                title: 'STAX Architecture & Design Quarterly',
+                rentedAt: Date.now() - 1 * 24 * 60 * 60 * 1000,
+                expiresAt: Date.now() + 6 * 24 * 60 * 60 * 1000,
+                daysRemaining: 6,
+                plan: '7-Day Access'
+            }
+        ]
+    }
 ];
 
 export const CONNECTED_DEVICES = [
@@ -486,3 +702,4 @@ export const RSS_FEEDS = [
     { id: "rss-3", title: "MIT Technology Review", source: "technologyreview.com", category: "AI & Future", unreadCount: 12 },
     { id: "rss-4", title: "ArXiv Quantum Physics Digest", source: "arxiv.org", category: "Science", unreadCount: 22 }
 ];
+

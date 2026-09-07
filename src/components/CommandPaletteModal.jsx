@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Search, X, BookOpen, RefreshCw, Smartphone, Sparkles, Newspaper, Headphones, Command, Sun, Moon, Palette } from 'lucide-react';
 
-export default function CommandPaletteModal({ isOpen, onClose, books, onSelectTab, onSelectBook, theme, setTheme }) {
+export default function CommandPaletteModal({ isOpen, onClose, books, onSelectTab, onSelectBook, theme, setTheme, user }) {
     const [query, setQuery] = useState('');
 
     useEffect(() => {
@@ -55,21 +55,27 @@ export default function CommandPaletteModal({ isOpen, onClose, books, onSelectTa
                     {/* Quick Navigation & Theme Commands */}
                     {!query && (
                         <div className="p-3 border-b border-slate-800/60 grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs font-mono">
-                            <button onClick={() => { onSelectTab('vault'); onClose(); }} className="p-2 rounded-xl bg-slate-800/60 hover:bg-slate-800 flex items-center gap-2 text-slate-300 transition-colors">
+                            <button onClick={() => { onSelectTab('vault'); onClose(); }} className="p-2 rounded-xl bg-slate-800/60 hover:bg-slate-800 flex items-center gap-2 text-slate-300 transition-colors cursor-pointer">
                                 <BookOpen className="w-3.5 h-3.5 text-indigo-400" /> Vault
                             </button>
-                            <button onClick={() => { onSelectTab('converter'); onClose(); }} className="p-2 rounded-xl bg-slate-800/60 hover:bg-slate-800 flex items-center gap-2 text-slate-300 transition-colors">
-                                <RefreshCw className="w-3.5 h-3.5 text-purple-400" /> Converter
+                            <button onClick={() => { onSelectTab('store'); onClose(); }} className="p-2 rounded-xl bg-slate-800/60 hover:bg-slate-800 flex items-center gap-2 text-slate-300 transition-colors cursor-pointer">
+                                <Sparkles className="w-3.5 h-3.5 text-pink-400" /> Store & Rent
                             </button>
-                            <button onClick={() => { onSelectTab('sync'); onClose(); }} className="p-2 rounded-xl bg-slate-800/60 hover:bg-slate-800 flex items-center gap-2 text-slate-300 transition-colors">
-                                <Smartphone className="w-3.5 h-3.5 text-emerald-400" /> Sync Device
-                            </button>
+                            {user?.role === 'admin' ? (
+                                <button onClick={() => { onSelectTab('admin'); onClose(); }} className="p-2 rounded-xl bg-slate-800/60 hover:bg-slate-800 flex items-center gap-2 text-amber-400 transition-colors cursor-pointer">
+                                    <Command className="w-3.5 h-3.5 text-amber-400" /> Admin OS
+                                </button>
+                            ) : (
+                                <button onClick={() => { onSelectTab('login'); onClose(); }} className="p-2 rounded-xl bg-slate-800/60 hover:bg-slate-800 flex items-center gap-2 text-slate-300 transition-colors cursor-pointer">
+                                    <RefreshCw className="w-3.5 h-3.5 text-indigo-400" /> Account
+                                </button>
+                            )}
                             <button
                                 onClick={() => {
                                     if (setTheme) setTheme(isDark ? 'light' : 'dark');
                                     onClose();
                                 }}
-                                className="p-2 rounded-xl bg-slate-800/60 hover:bg-slate-800 flex items-center gap-2 text-amber-300 transition-colors"
+                                className="p-2 rounded-xl bg-slate-800/60 hover:bg-slate-800 flex items-center gap-2 text-amber-300 transition-colors cursor-pointer"
                             >
                                 {isDark ? <Sun className="w-3.5 h-3.5 text-amber-400" /> : <Moon className="w-3.5 h-3.5 text-indigo-400" />}
                                 {isDark ? 'Light Mode' : 'Dark Mode'}
