@@ -1,0 +1,420 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-serif: 'Playfair Display', serif;
+    --font-display: 'Space Grotesk', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+  }
+}
+
+/* Base Document Transitions */
+html {
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Custom Glassmorphism & UI Panels (Default / Dark) */
+.glass-panel {
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+  transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.glass-card {
+  background: rgba(30, 41, 59, 0.65);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-card:hover {
+  background: rgba(30, 41, 59, 0.9);
+  border-color: rgba(99, 102, 241, 0.45);
+  box-shadow: 0 16px 35px -10px rgba(99, 102, 241, 0.35);
+  transform: translateY(-4px);
+}
+
+/* ==========================================================================
+   LIGHT MODE ARCHITECTURE (Solar Ivory & Modern Daylight Aesthetic)
+   ========================================================================== */
+
+html.light {
+  color-scheme: light;
+}
+
+html.light body {
+  background-color: #f8fafc !important;
+  color: #0f172a !important;
+}
+
+/* Light Mode Glass Panels */
+html.light .glass-panel {
+  background: rgba(255, 255, 255, 0.86) !important;
+  backdrop-filter: blur(24px) !important;
+  -webkit-backdrop-filter: blur(24px) !important;
+  border: 1px solid rgba(226, 232, 240, 0.9) !important;
+  box-shadow: 0 16px 45px -10px rgba(15, 23, 42, 0.07), 0 1px 2px rgba(0, 0, 0, 0.03) !important;
+}
+
+/* Light Mode Glass Cards */
+html.light .glass-card {
+  background: rgba(255, 255, 255, 0.82) !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
+  border: 1px solid rgba(226, 232, 240, 0.85) !important;
+  box-shadow: 0 4px 20px -4px rgba(15, 23, 42, 0.05) !important;
+}
+
+html.light .glass-card:hover {
+  background: #ffffff !important;
+  border-color: rgba(99, 102, 241, 0.45) !important;
+  box-shadow: 0 18px 36px -8px rgba(99, 102, 241, 0.16) !important;
+}
+
+/* Light Mode Core Background Overrides */
+html.light .bg-slate-950 {
+  background-color: #f8fafc !important;
+}
+
+html.light .bg-slate-900 {
+  background-color: #ffffff !important;
+}
+
+html.light .bg-slate-900\/95,
+html.light .bg-slate-900\/90 {
+  background-color: rgba(255, 255, 255, 0.95) !important;
+}
+
+html.light .bg-slate-900\/80 {
+  background-color: rgba(255, 255, 255, 0.88) !important;
+}
+
+html.light .bg-slate-900\/70,
+html.light .bg-slate-900\/60 {
+  background-color: rgba(255, 255, 255, 0.75) !important;
+}
+
+html.light .bg-slate-900\/50,
+html.light .bg-slate-900\/40 {
+  background-color: rgba(248, 250, 252, 0.85) !important;
+}
+
+html.light .bg-slate-800 {
+  background-color: #f1f5f9 !important;
+}
+
+html.light .bg-slate-800\/90,
+html.light .bg-slate-800\/80 {
+  background-color: rgba(241, 245, 249, 0.9) !important;
+}
+
+html.light .bg-slate-800\/60,
+html.light .bg-slate-800\/50 {
+  background-color: rgba(241, 245, 249, 0.7) !important;
+}
+
+html.light .bg-slate-800\/40,
+html.light .bg-slate-800\/30 {
+  background-color: rgba(241, 245, 249, 0.45) !important;
+}
+
+/* Light Mode Border Overrides */
+html.light .border-slate-800,
+html.light .border-slate-800\/90,
+html.light .border-slate-800\/80,
+html.light .border-slate-800\/60,
+html.light .border-slate-800\/50 {
+  border-color: #e2e8f0 !important;
+}
+
+html.light .border-slate-700,
+html.light .border-slate-700\/80,
+html.light .border-slate-700\/60 {
+  border-color: #cbd5e1 !important;
+}
+
+/* Light Mode Typography & Text Colors */
+html.light h1:not([class*="text-transparent"]):not([class*="from-"]),
+html.light h2:not([class*="text-transparent"]):not([class*="from-"]),
+html.light h3:not([class*="text-transparent"]):not([class*="from-"]),
+html.light h4:not([class*="text-transparent"]):not([class*="from-"]),
+html.light p.text-white,
+html.light strong.text-white,
+html.light span.text-white:not([class*="bg-indigo"]):not([class*="bg-purple"]):not([class*="bg-pink"]):not([class*="bg-blue"]):not([class*="bg-emerald"]):not([class*="bg-amber"]):not([class*="bg-rose"]):not([class*="from-"]):not([class*="bg-gradient"]),
+html.light div.text-white:not([class*="bg-indigo"]):not([class*="bg-purple"]):not([class*="bg-pink"]):not([class*="bg-blue"]):not([class*="bg-emerald"]):not([class*="bg-amber"]):not([class*="bg-rose"]):not([class*="from-"]):not([class*="bg-gradient"]) {
+  color: #0f172a !important;
+}
+
+html.light .text-slate-100:not([class*="bg-indigo"]):not([class*="bg-purple"]):not([class*="bg-gradient"]):not([class*="from-"]) {
+  color: #0f172a !important;
+}
+
+html.light .text-slate-200:not([class*="bg-indigo"]):not([class*="bg-purple"]):not([class*="bg-gradient"]):not([class*="from-"]) {
+  color: #1e293b !important;
+}
+
+html.light .text-slate-300:not([class*="bg-indigo"]):not([class*="bg-purple"]):not([class*="bg-gradient"]):not([class*="from-"]) {
+  color: #334155 !important;
+}
+
+html.light .text-slate-400:not([class*="bg-indigo"]):not([class*="bg-purple"]):not([class*="bg-gradient"]):not([class*="from-"]) {
+  color: #64748b !important;
+}
+
+html.light .text-slate-500 {
+  color: #94a3b8 !important;
+}
+
+/* Form Fields & Interactive Controls */
+html.light input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),
+html.light select,
+html.light textarea {
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+  border-color: #cbd5e1 !important;
+}
+
+html.light input::placeholder,
+html.light textarea::placeholder {
+  color: #94a3b8 !important;
+}
+
+/* Hover States in Light Mode */
+html.light .hover\:bg-slate-800:hover,
+html.light .hover\:bg-slate-800\/60:hover,
+html.light .hover\:bg-slate-800\/80:hover {
+  background-color: #e2e8f0 !important;
+}
+
+html.light .hover\:bg-slate-900:hover {
+  background-color: #f1f5f9 !important;
+}
+
+html.light .hover\:border-slate-700:hover {
+  border-color: #94a3b8 !important;
+}
+
+html.light .hover\:text-white:hover:not([class*="bg-indigo"]):not([class*="bg-purple"]) {
+  color: #0f172a !important;
+}
+
+/* Light Mode Scrollbars */
+html.light ::-webkit-scrollbar-track {
+  background: rgba(241, 245, 249, 0.85);
+}
+
+html.light ::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.6);
+  border-radius: 4px;
+}
+
+html.light ::-webkit-scrollbar-thumb:hover {
+  background: rgba(99, 102, 241, 0.8);
+}
+
+
+/* ==========================================================================
+   WARM SEPIA READING MODE (Vintage Parchment & Eye Comfort Aesthetic)
+   ========================================================================== */
+
+html.sepia {
+  color-scheme: light;
+}
+
+html.sepia body {
+  background-color: #fbf0d9 !important;
+  color: #2d1e12 !important;
+}
+
+html.sepia .glass-panel {
+  background: rgba(251, 240, 217, 0.92) !important;
+  backdrop-filter: blur(20px) !important;
+  border: 1px solid rgba(215, 196, 158, 0.85) !important;
+  box-shadow: 0 16px 40px -12px rgba(92, 64, 51, 0.1) !important;
+}
+
+html.sepia .glass-card {
+  background: rgba(247, 232, 203, 0.85) !important;
+  backdrop-filter: blur(14px) !important;
+  border: 1px solid rgba(215, 196, 158, 0.8) !important;
+  box-shadow: 0 4px 20px -4px rgba(92, 64, 51, 0.06) !important;
+}
+
+html.sepia .glass-card:hover {
+  background: #f7e8cb !important;
+  border-color: rgba(217, 119, 6, 0.5) !important;
+  box-shadow: 0 16px 35px -10px rgba(217, 119, 6, 0.25) !important;
+}
+
+html.sepia .bg-slate-950,
+html.sepia .bg-slate-900,
+html.sepia .bg-slate-900\/90,
+html.sepia .bg-slate-900\/80 {
+  background-color: #f5e5c7 !important;
+}
+
+html.sepia .bg-slate-800,
+html.sepia .bg-slate-800\/80,
+html.sepia .bg-slate-800\/60 {
+  background-color: #ecd7b1 !important;
+}
+
+html.sepia .border-slate-800,
+html.sepia .border-slate-700 {
+  border-color: #d7c49e !important;
+}
+
+html.sepia h1, html.sepia h2, html.sepia h3, html.sepia h4,
+html.sepia p.text-white, html.sepia span.text-white:not([class*="bg-indigo"]):not([class*="bg-purple"]):not([class*="bg-amber"]),
+html.sepia .text-slate-100,
+html.sepia .text-slate-200 {
+  color: #2d1e12 !important;
+}
+
+html.sepia .text-slate-300,
+html.sepia .text-slate-400 {
+  color: #5c4033 !important;
+}
+
+html.sepia input, html.sepia select, html.sepia textarea {
+  background-color: #fbf0d9 !important;
+  color: #2d1e12 !important;
+  border-color: #d7c49e !important;
+}
+
+
+/* ==========================================================================
+   3D BOOK SHELF & TEXTURE MASTER STYLING
+   ========================================================================== */
+
+.book-shelf-container {
+  perspective: 1400px;
+}
+
+.book-3d-wrapper {
+  transform-style: preserve-3d;
+  transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.book-3d-wrapper:hover {
+  transform: rotateY(-28deg) rotateX(10deg) translateZ(24px);
+}
+
+/* Text Gradient Accents */
+.text-gradient-purple {
+  background: linear-gradient(135deg, #818cf8 0%, #c084fc 50%, #f472b6 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Hyper-Realistic 3D Book Textures */
+.texture-leather {
+  background-color: #1a0f0d;
+  background-image:
+    radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.05) 0%, transparent 60%),
+    repeating-linear-gradient(45deg, rgba(0, 0, 0, 0.2) 0px, rgba(0, 0, 0, 0.2) 2px, transparent 2px, transparent 4px),
+    repeating-linear-gradient(-45deg, rgba(0, 0, 0, 0.15) 0px, rgba(0, 0, 0, 0.15) 1px, transparent 1px, transparent 3px);
+  box-shadow:
+    inset 0 0 15px rgba(0, 0, 0, 0.9),
+    inset 0 0 2px 2px rgba(212, 175, 55, 0.4);
+}
+
+.texture-cloth {
+  background-color: #0f172a;
+  background-image:
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.03) 1px, transparent 1px, transparent 2px),
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.03) 1px, transparent 1px, transparent 2px);
+}
+
+/* Classic Hubbed Spine Raised Bands */
+.book-spine-3d {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 28px;
+  transform: rotateY(-90deg) translateZ(14px);
+  transform-origin: left center;
+  background: linear-gradient(90deg, #090d16 0%, #2a364f 40%, #151d2a 70%, #090d16 100%);
+  box-shadow: inset 0 0 12px rgba(0, 0, 0, 0.95);
+}
+
+/* Raised Bands / Ribs on Spine */
+.book-spine-ribs::before {
+  content: '';
+  position: absolute;
+  top: 15%;
+  left: 0;
+  right: 0;
+  height: 70%;
+  background: repeating-linear-gradient(0deg,
+      transparent,
+      transparent 20px,
+      rgba(255, 255, 255, 0.15) 20px,
+      rgba(0, 0, 0, 0.8) 23px);
+}
+
+.book-pages-3d {
+  position: absolute;
+  top: 5px;
+  right: 0;
+  bottom: 5px;
+  width: 22px;
+  transform: rotateY(90deg) translateZ(18px);
+  transform-origin: right center;
+  background: repeating-linear-gradient(90deg,
+      #f8fafc,
+      #f8fafc 1px,
+      #e2e8f0 1px,
+      #cbd5e1 2px,
+      #94a3b8 3px);
+  box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.4);
+}
+
+/* Metallic Gold Foil Stamped Title Styling */
+.gold-stamped {
+  background: linear-gradient(135deg, #ffe082 0%, #ffb300 40%, #fff8e1 70%, #ff8f00 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0px 1px 2px rgba(0, 0, 0, 0.8));
+}
+
+/* Reader Mode Custom CSS Themes */
+.theme-cyber {
+  background-color: #030712 !important;
+  color: #38bdf8 !important;
+}
+
+.theme-sepia {
+  background-color: #fbf0d9 !important;
+  color: #432818 !important;
+}
+
+.theme-eink {
+  background-color: #f8fafc !important;
+  color: #0f172a !important;
+}
+
+/* Custom Scrollbars (Dark Default) */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(15, 23, 42, 0.6);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(99, 102, 241, 0.4);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(99, 102, 241, 0.7);
+}
